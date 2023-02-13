@@ -32,6 +32,12 @@ class _CharactersScreenState extends State<CharactersScreen> {
     });
   }
 
+  clearResults() {
+    setState(() {
+      characters = [];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -53,7 +59,8 @@ class _CharactersScreenState extends State<CharactersScreen> {
               ),
             ),
             const SizedBox(height: 12),
-            SearchBar(fetchCharacters: fetchCharacters),
+            SearchBar(
+                fetchCharacters: fetchCharacters, clearResults: clearResults),
             const SizedBox(height: 24.0),
             CharacterList(
               characters: characters,
