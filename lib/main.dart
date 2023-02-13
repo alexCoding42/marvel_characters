@@ -39,20 +39,31 @@ class _MainAppState extends State<MainApp> {
         },
         child: Scaffold(
           body: _children[_selectedIndex],
-          bottomNavigationBar: BottomNavigationBar(
-            items: const <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                label: "Characters",
-                icon: Icon(Icons.groups),
-              ),
-              BottomNavigationBarItem(
-                label: "Comics",
-                icon: Icon(Icons.menu_book_sharp),
-              ),
-            ],
-            currentIndex: _selectedIndex,
-            selectedItemColor: Colors.red[800],
-            onTap: _onItemTapped,
+          bottomNavigationBar: Container(
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey[300]!,
+                  offset: const Offset(0, -2),
+                  blurRadius: 5,
+                ),
+              ],
+            ),
+            child: BottomNavigationBar(
+              items: const <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                  label: "Characters",
+                  icon: Icon(Icons.groups),
+                ),
+                BottomNavigationBarItem(
+                  label: "Comics",
+                  icon: Icon(Icons.menu_book_sharp),
+                ),
+              ],
+              currentIndex: _selectedIndex,
+              selectedItemColor: Colors.red[800],
+              onTap: _onItemTapped,
+            ),
           ),
         ),
       ),
