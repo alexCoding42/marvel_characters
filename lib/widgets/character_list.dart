@@ -10,6 +10,17 @@ class CharacterList extends StatelessWidget {
       {Key? key, required this.characters, required this.isLoading})
       : super(key: key);
 
+  void _navigateToDetailsScreen(Map character, BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CharacterDetailsScreen(
+          character: character,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -33,16 +44,7 @@ class CharacterList extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final character = characters[index];
                     return InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => CharacterDetailsScreen(
-                              character: character,
-                            ),
-                          ),
-                        );
-                      },
+                      onTap: () => _navigateToDetailsScreen(character, context),
                       child: SizedBox(
                         height: 150.0,
                         child: Row(

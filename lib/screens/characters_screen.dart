@@ -20,7 +20,7 @@ class _CharactersScreenState extends State<CharactersScreen> {
     super.initState();
   }
 
-  fetchCharacters(String name) async {
+  void _fetchCharacters(String name) async {
     setState(() {
       isLoading = true;
     });
@@ -32,7 +32,7 @@ class _CharactersScreenState extends State<CharactersScreen> {
     });
   }
 
-  clearResults() {
+  void _clearResults() {
     setState(() {
       characters = [];
     });
@@ -60,7 +60,7 @@ class _CharactersScreenState extends State<CharactersScreen> {
             ),
             const SizedBox(height: 12),
             SearchBar(
-                fetchCharacters: fetchCharacters, clearResults: clearResults),
+                fetchCharacters: _fetchCharacters, clearResults: _clearResults),
             const SizedBox(height: 24.0),
             CharacterList(
               characters: characters,

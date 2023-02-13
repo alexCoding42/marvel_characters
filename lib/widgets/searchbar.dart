@@ -16,6 +16,42 @@ class SearchBar extends StatefulWidget {
 class _SearchBarState extends State<SearchBar> {
   Color iconColor = Colors.grey;
   String name = '';
+  final _textController = TextEditingController();
+
+  @override
+  void dispose() {
+    _textController.dispose();
+    super.dispose();
+  }
+
+  void _handleFocusChange(bool hasFocus) {
+    if (hasFocus) {
+      setState(() {
+        iconColor = Colors.red[800] ?? Colors.red;
+      });
+    } else {
+      setState(() {
+        iconColor = Colors.grey;
+      });
+    }
+  }
+
+  void _handleSubmitted(String newValue) {
+    setState(() {
+      name = newValue;
+    });
+    if (name.trim().isNotEmpty) {
+      widget.fetchCharacters(name);
+    }
+  }
+
+  void _handleClear() {
+    setState(() {
+      name = '';
+      widget.clearResults();
+    });
+    _textController.clear();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,26 +65,10 @@ class _SearchBarState extends State<SearchBar> {
         children: [
           Expanded(
             child: Focus(
-              onFocusChange: (hasFocus) {
-                if (hasFocus) {
-                  setState(() {
-                    iconColor = Colors.red[800] ?? Colors.red;
-                  });
-                } else {
-                  setState(() {
-                    iconColor = Colors.grey;
-                  });
-                }
-              },
+              onFocusChange: _handleFocusChange,
               child: TextField(
-                onSubmitted: (newValue) {
-                  setState(() {
-                    name = newValue;
-                  });
-                  if (name.trim().isNotEmpty) {
-                    widget.fetchCharacters(name);
-                  }
-                },
+                controller: _textController,
+                onSubmitted: _handleSubmitted,
                 decoration: InputDecoration(
                   icon: Icon(
                     Icons.search,
@@ -60,23 +80,16 @@ class _SearchBarState extends State<SearchBar> {
               ),
             ),
           ),
-          Container(
-            child: Material(
-              color: Colors.transparent,
-              child: IconButton(
-                splashRadius: 16,
-                iconSize: 20,
-                icon: Icon(
-                  Icons.clear,
-                  color: Colors.grey[600],
-                ),
-                onPressed: () {
-                  setState(() {
-                    name = '';
-                    widget.clearResults();
-                  });
-                },
+          Material(
+            color: Colors.transparent,
+            child: IconButton(
+              splashRadius: 16,
+              iconSize: 20,
+              icon: Icon(
+                Icons.clear,
+                color: Colors.grey[600],
               ),
+              onPressed: _handleClear,
             ),
           ),
         ],
