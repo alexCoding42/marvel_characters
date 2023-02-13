@@ -1,7 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 class SearchBar extends StatefulWidget {
-  const SearchBar({super.key});
+  final Function(String) fetchCharacters;
+
+  const SearchBar({super.key, required this.fetchCharacters});
 
   @override
   State<SearchBar> createState() => _SearchBarState();
@@ -9,6 +13,7 @@ class SearchBar extends StatefulWidget {
 
 class _SearchBarState extends State<SearchBar> {
   Color iconColor = Colors.grey;
+  String name = '';
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +36,14 @@ class _SearchBarState extends State<SearchBar> {
           }
         },
         child: TextField(
+          onSubmitted: (newValue) {
+            setState(() {
+              name = newValue;
+            });
+            if (name.trim().isNotEmpty) {
+              widget.fetchCharacters(name);
+            }
+          },
           decoration: InputDecoration(
             icon: Icon(
               Icons.search,

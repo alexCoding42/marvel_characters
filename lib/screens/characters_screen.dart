@@ -12,20 +12,23 @@ class CharactersScreen extends StatefulWidget {
 }
 
 class _CharactersScreenState extends State<CharactersScreen> {
-  Color iconColor = Colors.grey;
-
   List<dynamic> characters = [];
+  bool isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    fetchCharacters();
   }
 
-  fetchCharacters() async {
-    final results = await Requests().getCharacters();
+  fetchCharacters(String name) async {
+    setState(() {
+      isLoading = true;
+    });
+
+    final results = await Requests().getCharacters(name);
     setState(() {
       characters = results;
+      isLoading = false;
     });
   }
 
@@ -50,9 +53,12 @@ class _CharactersScreenState extends State<CharactersScreen> {
               ),
             ),
             const SizedBox(height: 12),
-            const SearchBar(),
+            SearchBar(fetchCharacters: fetchCharacters),
             const SizedBox(height: 24.0),
-            CharacterList(characters: characters),
+            CharacterList(
+              characters: characters,
+              isLoading: isLoading,
+            ),
           ],
         ),
       ),

@@ -10,11 +10,12 @@ class Requests {
   final String? apiKey = dotenv.env['MARVEL_API_KEY'];
   final String? privateKey = dotenv.env['MARVEL_PRIVATE_KEY'];
 
-  Future<List> getCharacters() async {
+  Future<List> getCharacters(String name) async {
     final ts = DateTime.now().millisecondsSinceEpoch.toString();
     final hash = _getHash(ts);
     final response = await http.get(
-      Uri.parse('$baseUrl$charactersEndpoint?apikey=$apiKey&ts=$ts&hash=$hash'),
+      Uri.parse(
+          '$baseUrl$charactersEndpoint?nameStartsWith=$name&apikey=$apiKey&ts=$ts&hash=$hash'),
     );
 
     if (response.statusCode == 200) {
@@ -22,6 +23,7 @@ class Requests {
       final characters = data['data']['results'];
       return characters;
     } else {
+      print(response.body);
       throw Exception('Failed to load characters');
     }
   }
