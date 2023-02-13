@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:marvel_characters/constants/colors.dart';
 import 'package:marvel_characters/screens/characters_screen.dart';
 import 'package:marvel_characters/screens/comics_screen.dart';
 
@@ -61,7 +62,7 @@ class _MainAppState extends State<MainApp> {
                 ),
               ],
               currentIndex: _selectedIndex,
-              selectedItemColor: Colors.red[800],
+              selectedItemColor: kPrimaryColor,
               onTap: _onItemTapped,
             ),
           ),

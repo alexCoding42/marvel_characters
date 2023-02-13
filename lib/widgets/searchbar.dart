@@ -1,6 +1,5 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:marvel_characters/constants/colors.dart';
 
 class SearchBar extends StatefulWidget {
   final Function(String) fetchCharacters;
@@ -27,7 +26,7 @@ class _SearchBarState extends State<SearchBar> {
   void _handleFocusChange(bool hasFocus) {
     if (hasFocus) {
       setState(() {
-        iconColor = Colors.red[800] ?? Colors.red;
+        iconColor = kPrimaryColor;
       });
     } else {
       setState(() {

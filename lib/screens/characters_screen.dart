@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:marvel_characters/constants/colors.dart';
 import 'package:marvel_characters/widgets/searchbar.dart';
 
 import '../services/requests.dart';
@@ -55,6 +56,7 @@ class _CharactersScreenState extends State<CharactersScreen> {
                 style: TextStyle(
                   fontSize: 32.0,
                   fontWeight: FontWeight.bold,
+                  color: kPrimaryColor,
                 ),
               ),
             ),
