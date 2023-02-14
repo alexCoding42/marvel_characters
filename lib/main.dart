@@ -3,6 +3,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:marvel_characters/constants/colors.dart';
 import 'package:marvel_characters/screens/characters_screen.dart';
 import 'package:marvel_characters/screens/movies_screen.dart';
+import 'package:marvel_characters/view_models/character_list_view_model.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   await dotenv.load();
@@ -31,39 +33,42 @@ class _MainAppState extends State<MainApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Marvel Characters',
-      debugShowCheckedModeBanner: false,
-      home: GestureDetector(
-        onTap: () {
-          FocusManager.instance.primaryFocus?.unfocus();
-        },
-        child: Scaffold(
-          body: _children[_selectedIndex],
-          bottomNavigationBar: Container(
-            decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey[300]!,
-                  offset: const Offset(0, -2),
-                  blurRadius: 5,
-                ),
-              ],
-            ),
-            child: BottomNavigationBar(
-              items: const <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
-                  label: "Characters",
-                  icon: Icon(Icons.groups),
-                ),
-                BottomNavigationBarItem(
-                  label: "Movies",
-                  icon: Icon(Icons.videocam),
-                ),
-              ],
-              currentIndex: _selectedIndex,
-              selectedItemColor: kPrimaryColor,
-              onTap: _onItemTapped,
+    return ChangeNotifierProvider(
+      create: (context) => CharacterListViewModel(),
+      child: MaterialApp(
+        title: 'Marvel Characters',
+        debugShowCheckedModeBanner: false,
+        home: GestureDetector(
+          onTap: () {
+            FocusManager.instance.primaryFocus?.unfocus();
+          },
+          child: Scaffold(
+            body: _children[_selectedIndex],
+            bottomNavigationBar: Container(
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey[300]!,
+                    offset: const Offset(0, -2),
+                    blurRadius: 5,
+                  ),
+                ],
+              ),
+              child: BottomNavigationBar(
+                items: const <BottomNavigationBarItem>[
+                  BottomNavigationBarItem(
+                    label: "Characters",
+                    icon: Icon(Icons.groups),
+                  ),
+                  BottomNavigationBarItem(
+                    label: "Movies",
+                    icon: Icon(Icons.videocam),
+                  ),
+                ],
+                currentIndex: _selectedIndex,
+                selectedItemColor: kPrimaryColor,
+                onTap: _onItemTapped,
+              ),
             ),
           ),
         ),

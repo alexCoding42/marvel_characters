@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:marvel_characters/constants/colors.dart';
+import 'package:marvel_characters/view_models/character_list_view_model.dart';
+import 'package:provider/provider.dart';
 
 class SearchBar extends StatefulWidget {
-  final Function(String) fetchCharacters;
   final Function clearResults;
 
-  const SearchBar(
-      {super.key, required this.fetchCharacters, required this.clearResults});
+  const SearchBar({super.key, required this.clearResults});
 
   @override
   State<SearchBar> createState() => _SearchBarState();
@@ -35,15 +35,6 @@ class _SearchBarState extends State<SearchBar> {
     }
   }
 
-  void _handleSubmitted(String newValue) {
-    setState(() {
-      name = newValue;
-    });
-    if (name.trim().isNotEmpty) {
-      widget.fetchCharacters(name);
-    }
-  }
-
   void _handleClear() {
     setState(() {
       name = '';
@@ -54,6 +45,8 @@ class _SearchBarState extends State<SearchBar> {
 
   @override
   Widget build(BuildContext context) {
+    final vm = Provider.of<CharacterListViewModel>(context);
+
     return Container(
       padding: const EdgeInsets.only(left: 20),
       decoration: BoxDecoration(
@@ -67,7 +60,11 @@ class _SearchBarState extends State<SearchBar> {
               onFocusChange: _handleFocusChange,
               child: TextField(
                 controller: _textController,
-                onSubmitted: _handleSubmitted,
+                onSubmitted: (value) {
+                  if (value.trim().isNotEmpty) {
+                    vm.fetchCharacters(value);
+                  }
+                },
                 decoration: InputDecoration(
                   icon: Icon(
                     Icons.search,

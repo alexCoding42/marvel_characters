@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:marvel_characters/models/character.dart';
 
 class CharacterDetailsScreen extends StatelessWidget {
-  final Map character;
+  final Character character;
 
   const CharacterDetailsScreen({Key? key, required this.character})
       : super(key: key);
@@ -11,7 +12,7 @@ class CharacterDetailsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          character['name'],
+          character.name ?? "No name",
           style: const TextStyle(color: Colors.black),
         ),
         backgroundColor: Colors.white,
@@ -27,12 +28,10 @@ class CharacterDetailsScreen extends StatelessWidget {
           children: [
             Container(
               width: double.infinity,
-              height: 350.0,
+              height: 250.0,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: NetworkImage(character['thumbnail']['path'] +
-                      '.' +
-                      character['thumbnail']['extension']),
+                  image: NetworkImage(character.thumbnail?.imageUrl ?? ""),
                   fit: BoxFit.cover,
                 ),
                 boxShadow: const [
@@ -44,14 +43,13 @@ class CharacterDetailsScreen extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 20.0),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12.0),
+              padding: const EdgeInsets.all(12.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    character['name'],
+                    character.name ?? "No name",
                     style: const TextStyle(
                       fontSize: 32.0,
                       fontWeight: FontWeight.bold,
@@ -59,7 +57,7 @@ class CharacterDetailsScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 8.0),
                   Text(
-                    character['description'],
+                    character.description ?? "No description",
                     style: const TextStyle(
                       fontSize: 18.0,
                       color: Colors.grey,

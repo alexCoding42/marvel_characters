@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-import '../services/requests.dart';
+import '../services/webservice.dart';
 
 class MoviesScreen extends StatefulWidget {
   const MoviesScreen({super.key});
@@ -25,9 +25,9 @@ class _MoviesScreenState extends State<MoviesScreen> {
       isLoading = true;
     });
 
-    final results = await Requests().getMovies();
+    // final results = await Requests().getMovies();
     setState(() {
-      movies = results;
+      // movies = results;
       isLoading = false;
     });
   }

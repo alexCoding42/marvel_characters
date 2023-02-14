@@ -3,7 +3,9 @@ import 'package:crypto/crypto.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
-class Requests {
+import '../models/character.dart';
+
+class Webservice {
   static const String baseUrl = 'https://gateway.marvel.com:443/v1/public';
   static const String charactersEndpoint = '/characters';
   static const String mcuApiUrl = 'https://mcuapi.herokuapp.com/api/v1/movies';
@@ -17,18 +19,17 @@ class Requests {
     return digest.toString();
   }
 
-  Future<List> getCharacters(String name) async {
+  Future<List<Character>> fetchCharacters(String name) async {
     final ts = DateTime.now().millisecondsSinceEpoch.toString();
     final hash = _getHash(ts);
-    final response = await http.get(
-      Uri.parse(
-          '$baseUrl$charactersEndpoint?nameStartsWith=$name&apikey=$apiKey&ts=$ts&hash=$hash'),
-    );
+    final url =
+        '$baseUrl$charactersEndpoint?nameStartsWith=$name&apikey=$apiKey&ts=$ts&hash=$hash';
+    final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      final characters = data['data']['results'];
-      return characters;
+      final body = jsonDecode(response.body);
+      final Iterable json = body["data"]['results'];
+      return json.map((character) => Character.fromJson(character)).toList();
     } else {
       throw Exception('Failed to load characters');
     }
