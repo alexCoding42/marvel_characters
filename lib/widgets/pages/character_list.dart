@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:marvel_characters/screens/character_details_screen.dart';
 import 'package:marvel_characters/view_models/character_view_model.dart';
+import 'package:marvel_characters/widgets/atoms/loading_indicator.dart';
 
 class CharacterList extends StatelessWidget {
   final List<CharacterViewModel> characters;
@@ -47,10 +49,17 @@ class CharacterList extends StatelessWidget {
                         height: 100.0,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5.0),
-                          image: DecorationImage(
-                            image: NetworkImage(
-                                character.character.thumbnail?.imageUrl ?? ""),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(5.0),
+                          child: CachedNetworkImage(
+                            imageUrl:
+                                character.character.thumbnail?.imageUrl ?? "",
                             fit: BoxFit.cover,
+                            placeholder: (context, url) =>
+                                const LoadingIndicator(),
+                            errorWidget: (context, url, error) =>
+                                Icon(Icons.error),
                           ),
                         ),
                       ),

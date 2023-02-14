@@ -36,7 +36,7 @@ class _MainAppState extends State<MainApp> {
     return ChangeNotifierProvider(
       create: (context) => CharacterListViewModel(),
       child: MaterialApp(
-        title: 'Marvel Characters',
+        title: 'Marvel Universe',
         debugShowCheckedModeBanner: false,
         home: GestureDetector(
           onTap: () {

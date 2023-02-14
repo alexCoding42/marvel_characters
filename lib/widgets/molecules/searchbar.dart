@@ -3,25 +3,18 @@ import 'package:marvel_characters/constants/colors.dart';
 import 'package:marvel_characters/view_models/character_list_view_model.dart';
 import 'package:provider/provider.dart';
 
-class SearchBar extends StatefulWidget {
-  final Function clearResults;
+import '../atoms/clear_icon_button.dart';
 
-  const SearchBar({super.key, required this.clearResults});
+class SearchBar extends StatefulWidget {
+  const SearchBar({super.key});
 
   @override
   State<SearchBar> createState() => _SearchBarState();
 }
 
 class _SearchBarState extends State<SearchBar> {
+  final TextEditingController _textController = TextEditingController();
   Color iconColor = Colors.grey;
-  String name = '';
-  final _textController = TextEditingController();
-
-  @override
-  void dispose() {
-    _textController.dispose();
-    super.dispose();
-  }
 
   void _handleFocusChange(bool hasFocus) {
     if (hasFocus) {
@@ -35,17 +28,9 @@ class _SearchBarState extends State<SearchBar> {
     }
   }
 
-  void _handleClear() {
-    setState(() {
-      name = '';
-      widget.clearResults();
-    });
-    _textController.clear();
-  }
-
   @override
   Widget build(BuildContext context) {
-    final vm = Provider.of<CharacterListViewModel>(context);
+    final characterListViewModel = Provider.of<CharacterListViewModel>(context);
 
     return Container(
       padding: const EdgeInsets.only(left: 20),
@@ -62,7 +47,7 @@ class _SearchBarState extends State<SearchBar> {
                 controller: _textController,
                 onSubmitted: (value) {
                   if (value.trim().isNotEmpty) {
-                    vm.fetchCharacters(value);
+                    characterListViewModel.fetchCharacters(value);
                   }
                 },
                 decoration: InputDecoration(
@@ -76,17 +61,9 @@ class _SearchBarState extends State<SearchBar> {
               ),
             ),
           ),
-          Material(
-            color: Colors.transparent,
-            child: IconButton(
-              splashRadius: 16,
-              iconSize: 20,
-              icon: Icon(
-                Icons.clear,
-                color: Colors.grey[600],
-              ),
-              onPressed: _handleClear,
-            ),
+          ClearIconButton(
+            textController: _textController,
+            characterListViewModel: characterListViewModel,
           ),
         ],
       ),
