@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:marvel_characters/constants/colors.dart';
+import 'package:marvel_characters/screens/movie_details_screen.dart';
 import 'package:marvel_characters/view_models/movie_list_view_model.dart';
+import 'package:marvel_characters/view_models/movie_view_model.dart';
 import 'package:marvel_characters/widgets/atoms/loading_indicator.dart';
 import 'package:provider/provider.dart';
 
@@ -23,12 +25,21 @@ class _MoviesScreenState extends State<MoviesScreen> {
     _movieListViewModel.fetchMovies();
   }
 
+  void _navigateToDetailsScreen(BuildContext context, MovieViewModel movie) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MovieDetailsScreen(movie: movie.movie),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          padding: const EdgeInsets.symmetric(horizontal: 12.0),
           child: Column(
             children: [
               const SizedBox(height: 8.0),
@@ -71,17 +82,22 @@ class _MoviesScreenState extends State<MoviesScreen> {
                           mainAxisSpacing: 10,
                         ),
                         itemBuilder: (BuildContext context, int index) {
-                          return ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
-                            child: CachedNetworkImage(
-                              imageUrl: movieListViewModel
-                                      .movies[index].coverUrl
-                                      ?.toString() ??
-                                  "",
-                              placeholder: (context, url) =>
-                                  const LoadingIndicator(),
-                              errorWidget: (context, url, error) =>
-                                  const Icon(Icons.error),
+                          final movie = movieListViewModel.movies[index];
+                          return GestureDetector(
+                            onTap: () =>
+                                _navigateToDetailsScreen(context, movie),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: CachedNetworkImage(
+                                imageUrl: movieListViewModel
+                                        .movies[index].coverUrl
+                                        ?.toString() ??
+                                    "",
+                                placeholder: (context, url) =>
+                                    const LoadingIndicator(),
+                                errorWidget: (context, url, error) =>
+                                    const Icon(Icons.error),
+                              ),
                             ),
                           );
                         },
