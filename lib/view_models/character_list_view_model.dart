@@ -10,7 +10,6 @@ class CharacterListViewModel extends ChangeNotifier {
 
   Future<void> fetchCharacters(String name) async {
     _isLoading = true;
-    notifyListeners();
 
     final results = await Webservice().fetchCharacters(name);
     characters =

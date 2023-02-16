@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
-
-import '../models/character.dart';
+import 'package:marvel_characters/models/character.dart';
+import 'package:marvel_characters/models/movie.dart';
 
 class Webservice {
   static const String baseUrl = 'https://gateway.marvel.com:443/v1/public';
@@ -35,13 +35,13 @@ class Webservice {
     }
   }
 
-  Future<List> getMovies() async {
+  Future<List<Movie>> fetchMovies() async {
     final response = await http.get(Uri.parse(mcuApiUrl));
 
     if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      final movies = data['data'];
-      return movies;
+      final body = jsonDecode(response.body);
+      final Iterable json = body["data"];
+      return json.map((movie) => Movie.fromJson(movie)).toList();
     } else {
       throw Exception('Failed to load movies');
     }

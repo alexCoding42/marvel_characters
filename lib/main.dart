@@ -4,6 +4,7 @@ import 'package:marvel_characters/constants/colors.dart';
 import 'package:marvel_characters/screens/characters_screen.dart';
 import 'package:marvel_characters/screens/movies_screen.dart';
 import 'package:marvel_characters/view_models/character_list_view_model.dart';
+import 'package:marvel_characters/view_models/movie_list_view_model.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -33,8 +34,15 @@ class _MainAppState extends State<MainApp> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => CharacterListViewModel(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<CharacterListViewModel>(
+          create: (context) => CharacterListViewModel(),
+        ),
+        ChangeNotifierProvider<MovieListViewModel>(
+          create: (context) => MovieListViewModel(),
+        ),
+      ],
       child: MaterialApp(
         title: 'Marvel Universe',
         debugShowCheckedModeBanner: false,
