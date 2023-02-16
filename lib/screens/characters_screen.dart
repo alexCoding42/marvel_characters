@@ -28,7 +28,7 @@ class _CharactersScreenState extends State<CharactersScreen> {
             const Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                "Marvel",
+                "Characters",
                 style: TextStyle(
                   fontSize: 32.0,
                   fontWeight: FontWeight.bold,

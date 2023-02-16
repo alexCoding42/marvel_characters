@@ -55,7 +55,7 @@ class _SearchBarState extends State<SearchBar> {
                     Icons.search,
                     color: iconColor,
                   ),
-                  hintText: "Search...",
+                  hintText: "Search any characters...",
                   border: InputBorder.none,
                 ),
               ),
