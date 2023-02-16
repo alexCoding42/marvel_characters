@@ -6,7 +6,9 @@ import 'package:provider/provider.dart';
 import '../atoms/clear_icon_button.dart';
 
 class SearchBar extends StatefulWidget {
-  const SearchBar({super.key});
+  final String hintText;
+
+  const SearchBar({Key? key, this.hintText = "Search"}) : super(key: key);
 
   @override
   State<SearchBar> createState() => _SearchBarState();
@@ -30,6 +32,7 @@ class _SearchBarState extends State<SearchBar> {
 
   @override
   Widget build(BuildContext context) {
+    // TODO: make the widget more flexible and able to work with both characterListViewModel and comicListViewModel
     final characterListViewModel = Provider.of<CharacterListViewModel>(context);
 
     return Container(
@@ -55,7 +58,7 @@ class _SearchBarState extends State<SearchBar> {
                     Icons.search,
                     color: iconColor,
                   ),
-                  hintText: "Search any characters...",
+                  hintText: widget.hintText,
                   border: InputBorder.none,
                 ),
               ),

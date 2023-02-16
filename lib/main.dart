@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:marvel_characters/constants/colors.dart';
 import 'package:marvel_characters/screens/characters_screen.dart';
+import 'package:marvel_characters/screens/comics_screen.dart';
 import 'package:marvel_characters/screens/movies_screen.dart';
 import 'package:marvel_characters/view_models/character_list_view_model.dart';
 import 'package:marvel_characters/view_models/movie_list_view_model.dart';
@@ -23,6 +24,7 @@ class _MainAppState extends State<MainApp> {
   int _selectedIndex = 0;
   final List<Widget> _children = const [
     CharactersScreen(),
+    ComicsScreen(),
     MoviesScreen(),
   ];
 
@@ -67,6 +69,10 @@ class _MainAppState extends State<MainApp> {
                   BottomNavigationBarItem(
                     label: "Characters",
                     icon: Icon(Icons.groups),
+                  ),
+                  BottomNavigationBarItem(
+                    label: "Comics",
+                    icon: Icon(Icons.menu_book_sharp),
                   ),
                   BottomNavigationBarItem(
                     label: "Movies",
