@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:marvel_characters/constants/colors.dart';
 import 'package:marvel_characters/view_models/character_list_view_model.dart';
+import 'package:marvel_characters/view_models/comic_list_view_model.dart';
 import 'package:provider/provider.dart';
 
 import '../atoms/clear_icon_button.dart';
 
+enum SearchBarType { characters, comics }
+
 class SearchBar extends StatefulWidget {
   final String hintText;
+  final SearchBarType type;
 
-  const SearchBar({Key? key, this.hintText = "Search"}) : super(key: key);
+  const SearchBar(
+      {Key? key,
+      this.hintText = "Search",
+      this.type = SearchBarType.characters})
+      : super(key: key);
 
   @override
   State<SearchBar> createState() => _SearchBarState();
@@ -32,8 +40,9 @@ class _SearchBarState extends State<SearchBar> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: make the widget more flexible and able to work with both characterListViewModel and comicListViewModel
+    // TODO: refacto the widget to be flexible and able to work with both characterListViewModel and comicListViewModel
     final characterListViewModel = Provider.of<CharacterListViewModel>(context);
+    final comicListViewModel = Provider.of<ComicListViewModel>(context);
 
     return Container(
       padding: const EdgeInsets.only(left: 20),
@@ -50,7 +59,11 @@ class _SearchBarState extends State<SearchBar> {
                 controller: _textController,
                 onSubmitted: (value) {
                   if (value.trim().isNotEmpty) {
-                    characterListViewModel.fetchCharacters(value);
+                    if (widget.type == SearchBarType.characters) {
+                      characterListViewModel.fetchCharacters(value);
+                    } else if (widget.type == SearchBarType.comics) {
+                      comicListViewModel.fetchComics(value);
+                    }
                   }
                 },
                 decoration: InputDecoration(
@@ -64,10 +77,17 @@ class _SearchBarState extends State<SearchBar> {
               ),
             ),
           ),
-          ClearIconButton(
-            textController: _textController,
-            characterListViewModel: characterListViewModel,
-          ),
+          widget.type == SearchBarType.characters
+              ? ClearIconButton(
+                  textController: _textController,
+                  type: ClearIconButtonType.characters,
+                  characterListViewModel: characterListViewModel,
+                )
+              : ClearIconButton(
+                  textController: _textController,
+                  type: ClearIconButtonType.comics,
+                  comicListViewModel: comicListViewModel,
+                )
         ],
       ),
     );

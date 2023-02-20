@@ -17,7 +17,7 @@ class ComicViewModel {
     return comic.title;
   }
 
-  double? get issueNumber {
+  int? get issueNumber {
     return comic.issueNumber;
   }
 

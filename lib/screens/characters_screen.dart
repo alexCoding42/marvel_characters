@@ -38,6 +38,7 @@ class _CharactersScreenState extends State<CharactersScreen> {
             ),
             const SizedBox(height: 12),
             const SearchBar(
+              type: SearchBarType.characters,
               hintText: "Search characters",
             ),
             const SizedBox(height: 24.0),

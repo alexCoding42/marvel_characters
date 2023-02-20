@@ -1,18 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:marvel_characters/view_models/character_list_view_model.dart';
+import 'package:marvel_characters/view_models/comic_list_view_model.dart';
 
-class ClearIconButton extends StatelessWidget {
+enum ClearIconButtonType { characters, comics }
+
+// TODO: refacto the widget to be flexible and able to work with both characterListViewModel and comicListViewModel
+class ClearIconButton extends StatefulWidget {
   final TextEditingController textController;
-  final CharacterListViewModel characterListViewModel;
+  final ClearIconButtonType type;
+  final CharacterListViewModel? characterListViewModel;
+  final ComicListViewModel? comicListViewModel;
 
-  const ClearIconButton({
-    Key? key,
-    required this.textController,
-    required this.characterListViewModel,
-  }) : super(key: key);
+  const ClearIconButton(
+      {Key? key,
+      required this.textController,
+      required this.type,
+      this.characterListViewModel,
+      this.comicListViewModel})
+      : super(key: key);
 
   @override
+  State<ClearIconButton> createState() => _ClearIconButtonState();
+}
+
+class _ClearIconButtonState extends State<ClearIconButton> {
+  @override
   Widget build(BuildContext context) {
+    // final CharacterListViewModel = Provider.of<CharacterListViewModel>(context);
+    // final ComicListViewModel = Provider.of<ComicListViewModel>(context);
+
     return Material(
       color: Colors.transparent,
       child: IconButton(
@@ -23,8 +39,10 @@ class ClearIconButton extends StatelessWidget {
           color: Colors.grey[600],
         ),
         onPressed: () {
-          textController.clear();
-          characterListViewModel.clearList();
+          widget.textController.clear();
+          widget.type == ClearIconButtonType.characters
+              ? widget.characterListViewModel?.clearList()
+              : widget.comicListViewModel?.clearList();
         },
       ),
     );

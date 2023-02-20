@@ -4,7 +4,7 @@ class Comic {
   final int? id;
   final int? digitalId;
   final String? title;
-  final double? issueNumber;
+  final int? issueNumber;
   final String? variantDescription;
   final String? description;
   final String? modified;

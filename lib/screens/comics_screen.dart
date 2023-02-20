@@ -37,6 +37,7 @@ class _ComicsScreenState extends State<ComicsScreen> {
             ),
             const SizedBox(height: 12),
             const SearchBar(
+              type: SearchBarType.comics,
               hintText: "Search comics",
             ),
             const SizedBox(height: 24.0),
