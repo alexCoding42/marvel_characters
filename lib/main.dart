@@ -5,6 +5,7 @@ import 'package:marvel_characters/screens/characters_screen.dart';
 import 'package:marvel_characters/screens/comics_screen.dart';
 import 'package:marvel_characters/screens/movies_screen.dart';
 import 'package:marvel_characters/view_models/character_list_view_model.dart';
+import 'package:marvel_characters/view_models/comic_list_view_model.dart';
 import 'package:marvel_characters/view_models/movie_list_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -40,6 +41,9 @@ class _MainAppState extends State<MainApp> {
       providers: [
         ChangeNotifierProvider<CharacterListViewModel>(
           create: (context) => CharacterListViewModel(),
+        ),
+        ChangeNotifierProvider<ComicListViewModel>(
+          create: (context) => ComicListViewModel(),
         ),
         ChangeNotifierProvider<MovieListViewModel>(
           create: (context) => MovieListViewModel(),

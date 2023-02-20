@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:marvel_characters/constants/colors.dart';
+import 'package:marvel_characters/view_models/comic_list_view_model.dart';
+import 'package:marvel_characters/widgets/atoms/loading_indicator.dart';
 import 'package:marvel_characters/widgets/molecules/searchbar.dart';
+import 'package:marvel_characters/widgets/pages/comic_list.dart';
+import 'package:provider/provider.dart';
 
 class ComicsScreen extends StatefulWidget {
   const ComicsScreen({super.key});
@@ -10,10 +14,10 @@ class ComicsScreen extends StatefulWidget {
 }
 
 class _ComicsScreenState extends State<ComicsScreen> {
-  // final characterListViewModel = Provider.of<CharacterListViewModel>(context);
-
   @override
   Widget build(BuildContext context) {
+    final comicListViewModel = Provider.of<ComicListViewModel>(context);
+
     return SafeArea(
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -36,11 +40,9 @@ class _ComicsScreenState extends State<ComicsScreen> {
               hintText: "Search comics",
             ),
             const SizedBox(height: 24.0),
-            // characterListViewModel.isLoading
-            //     ? const Expanded(child: LoadingIndicator())
-            //     : Expanded(
-            //         child: CharacterList(
-            //             characters: characterListViewModel.characters)),
+            comicListViewModel.isLoading
+                ? const Expanded(child: LoadingIndicator())
+                : Expanded(child: ComicList(comics: comicListViewModel.comics)),
           ],
         ),
       ),
