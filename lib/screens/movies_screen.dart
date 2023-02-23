@@ -1,11 +1,11 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:marvel_characters/bloc/movie/movies_bloc.dart';
 import 'package:marvel_characters/constants/colors.dart';
+import 'package:marvel_characters/models/movie.dart';
 import 'package:marvel_characters/screens/movie_details_screen.dart';
-import 'package:marvel_characters/view_models/movie_list_view_model.dart';
-import 'package:marvel_characters/view_models/movie_view_model.dart';
 import 'package:marvel_characters/widgets/atoms/loading_indicator.dart';
-import 'package:provider/provider.dart';
 
 class MoviesScreen extends StatefulWidget {
   const MoviesScreen({Key? key}) : super(key: key);
@@ -15,21 +15,20 @@ class MoviesScreen extends StatefulWidget {
 }
 
 class _MoviesScreenState extends State<MoviesScreen> {
-  late MovieListViewModel _movieListViewModel;
+  late MoviesBloc _moviesBloc;
 
   @override
   void initState() {
     super.initState();
-    _movieListViewModel =
-        Provider.of<MovieListViewModel>(context, listen: false);
-    _movieListViewModel.fetchMovies();
+    _moviesBloc = BlocProvider.of<MoviesBloc>(context);
+    _moviesBloc.add(FetchMoviesEvent());
   }
 
-  void _navigateToDetailsScreen(BuildContext context, MovieViewModel movie) {
+  void _navigateToDetailsScreen(BuildContext context, Movie movie) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => MovieDetailsScreen(movie: movie.movie),
+        builder: (context) => MovieDetailsScreen(movie: movie),
       ),
     );
   }
@@ -55,54 +54,67 @@ class _MoviesScreenState extends State<MoviesScreen> {
                 ),
               ),
               const SizedBox(height: 12.0),
-              Consumer<MovieListViewModel>(
-                builder: (context, movieListViewModel, child) {
-                  if (movieListViewModel.isLoading) {
+              BlocBuilder<MoviesBloc, MoviesState>(
+                builder: (context, state) {
+                  if (state is MoviesLoadingState) {
                     return const Expanded(child: LoadingIndicator());
-                  } else if (movieListViewModel.movies.isEmpty) {
-                    return const Center(
+                  } else if (state is MoviesErrorState) {
+                    return Center(
                       child: Text(
-                        'No Results Found',
-                        style: TextStyle(
+                        state.errorMessage,
+                        style: const TextStyle(
                           fontSize: 18.0,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                     );
-                  } else {
-                    return Expanded(
-                      child: GridView.builder(
-                        padding: const EdgeInsets.all(8.0),
-                        itemCount: movieListViewModel.movies.length,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio: 2 / 3,
-                          crossAxisSpacing: 10,
-                          mainAxisSpacing: 10,
+                  } else if (state is MoviesLoadedState) {
+                    if (state.movies.isEmpty) {
+                      return const Center(
+                        child: Text(
+                          'No Results Found',
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
-                        itemBuilder: (BuildContext context, int index) {
-                          final movie = movieListViewModel.movies[index];
-                          return GestureDetector(
-                            onTap: () =>
-                                _navigateToDetailsScreen(context, movie),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
-                              child: CachedNetworkImage(
-                                imageUrl: movieListViewModel
-                                        .movies[index].coverUrl
-                                        ?.toString() ??
-                                    "",
-                                placeholder: (context, url) =>
-                                    const LoadingIndicator(),
-                                errorWidget: (context, url, error) =>
-                                    const Icon(Icons.error),
+                      );
+                    } else {
+                      return Expanded(
+                        child: GridView.builder(
+                          padding: const EdgeInsets.all(8.0),
+                          itemCount: state.movies.length,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            childAspectRatio: 2 / 3,
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 10,
+                          ),
+                          itemBuilder: (BuildContext context, int index) {
+                            final movie = state.movies[index];
+                            return GestureDetector(
+                              onTap: () =>
+                                  _navigateToDetailsScreen(context, movie),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(20),
+                                child: CachedNetworkImage(
+                                  imageUrl: state.movies[index].coverUrl
+                                          ?.toString() ??
+                                      "",
+                                  placeholder: (context, url) =>
+                                      const LoadingIndicator(),
+                                  errorWidget: (context, url, error) =>
+                                      const Icon(Icons.error),
+                                ),
                               ),
-                            ),
-                          );
-                        },
-                      ),
-                    );
+                            );
+                          },
+                        ),
+                      );
+                    }
+                  } else {
+                    return Container();
                   }
                 },
               ),

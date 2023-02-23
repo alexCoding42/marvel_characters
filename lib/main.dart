@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:marvel_characters/constants/colors.dart';
 import 'package:marvel_characters/screens/characters_screen.dart';
 import 'package:marvel_characters/screens/comics_screen.dart';
 import 'package:marvel_characters/screens/movies_screen.dart';
-import 'package:marvel_characters/view_models/character_list_view_model.dart';
-import 'package:marvel_characters/view_models/comic_list_view_model.dart';
-import 'package:marvel_characters/view_models/movie_list_view_model.dart';
-import 'package:provider/provider.dart';
+import 'package:marvel_characters/services/webservice.dart';
+
+import 'bloc/character/characters_bloc.dart';
+import 'bloc/comics/comics_bloc.dart';
+import 'bloc/movie/movies_bloc.dart';
 
 void main() async {
   await dotenv.load();
@@ -37,16 +39,16 @@ class _MainAppState extends State<MainApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
+    return MultiBlocProvider(
       providers: [
-        ChangeNotifierProvider<CharacterListViewModel>(
-          create: (context) => CharacterListViewModel(),
+        BlocProvider<CharactersBloc>(
+          create: (context) => CharactersBloc(webservice: Webservice()),
         ),
-        ChangeNotifierProvider<ComicListViewModel>(
-          create: (context) => ComicListViewModel(),
+        BlocProvider<ComicsBloc>(
+          create: (context) => ComicsBloc(webservice: Webservice()),
         ),
-        ChangeNotifierProvider<MovieListViewModel>(
-          create: (context) => MovieListViewModel(),
+        BlocProvider<MoviesBloc>(
+          create: (context) => MoviesBloc(webservice: Webservice()),
         ),
       ],
       child: MaterialApp(

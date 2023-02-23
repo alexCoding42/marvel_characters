@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:marvel_characters/bloc/character/characters_bloc.dart';
+import 'package:marvel_characters/bloc/comics/comics_bloc.dart';
 import 'package:marvel_characters/constants/colors.dart';
-import 'package:marvel_characters/view_models/character_list_view_model.dart';
-import 'package:marvel_characters/view_models/comic_list_view_model.dart';
 import 'package:provider/provider.dart';
 
 import '../atoms/clear_icon_button.dart';
@@ -40,9 +40,8 @@ class _SearchBarState extends State<SearchBar> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: refacto the widget to be flexible and able to work with both characterListViewModel and comicListViewModel
-    final characterListViewModel = Provider.of<CharacterListViewModel>(context);
-    final comicListViewModel = Provider.of<ComicListViewModel>(context);
+    final charactersBloc = context.read<CharactersBloc>();
+    final comicsBloc = context.read<ComicsBloc>();
 
     return Container(
       padding: const EdgeInsets.only(left: 20),
@@ -60,9 +59,9 @@ class _SearchBarState extends State<SearchBar> {
                 onSubmitted: (value) {
                   if (value.trim().isNotEmpty) {
                     if (widget.type == SearchBarType.characters) {
-                      characterListViewModel.fetchCharacters(value);
+                      charactersBloc.add(FetchCharactersEvent(value));
                     } else if (widget.type == SearchBarType.comics) {
-                      comicListViewModel.fetchComics(value);
+                      comicsBloc.add(FetchComicsEvent(value));
                     }
                   }
                 },
@@ -77,17 +76,12 @@ class _SearchBarState extends State<SearchBar> {
               ),
             ),
           ),
-          widget.type == SearchBarType.characters
-              ? ClearIconButton(
-                  textController: _textController,
-                  type: ClearIconButtonType.characters,
-                  characterListViewModel: characterListViewModel,
-                )
-              : ClearIconButton(
-                  textController: _textController,
-                  type: ClearIconButtonType.comics,
-                  comicListViewModel: comicListViewModel,
-                )
+          ClearIconButton(
+            textController: _textController,
+            type: widget.type == SearchBarType.characters
+                ? ClearIconButtonType.characters
+                : ClearIconButtonType.comics,
+          ),
         ],
       ),
     );

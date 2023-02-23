@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:marvel_characters/bloc/character/characters_bloc.dart';
 import 'package:marvel_characters/constants/colors.dart';
-import 'package:marvel_characters/view_models/character_list_view_model.dart';
 import 'package:marvel_characters/widgets/atoms/loading_indicator.dart';
 import 'package:marvel_characters/widgets/molecules/searchbar.dart';
-import 'package:provider/provider.dart';
-
-import '../widgets/pages/character_list.dart';
+import 'package:marvel_characters/widgets/pages/character_list.dart';
 
 class CharactersScreen extends StatefulWidget {
   const CharactersScreen({super.key});
@@ -17,8 +16,6 @@ class CharactersScreen extends StatefulWidget {
 class _CharactersScreenState extends State<CharactersScreen> {
   @override
   Widget build(BuildContext context) {
-    final characterListViewModel = Provider.of<CharacterListViewModel>(context);
-
     return SafeArea(
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -42,11 +39,41 @@ class _CharactersScreenState extends State<CharactersScreen> {
               hintText: "Search characters",
             ),
             const SizedBox(height: 24.0),
-            characterListViewModel.isLoading
-                ? const Expanded(child: LoadingIndicator())
-                : Expanded(
-                    child: CharacterList(
-                        characters: characterListViewModel.characters)),
+            BlocBuilder<CharactersBloc, CharactersState>(
+              builder: (context, state) {
+                if (state is CharactersLoadingState) {
+                  return const Expanded(child: LoadingIndicator());
+                } else if (state is CharactersErrorState) {
+                  return Center(
+                    child: Text(
+                      state.errorMessage,
+                      style: const TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  );
+                } else if (state is CharactersLoadedState) {
+                  if (state.characters.isEmpty) {
+                    return const Center(
+                      child: Text(
+                        'No Results Found',
+                        style: TextStyle(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    );
+                  } else {
+                    return Expanded(
+                      child: CharacterList(characters: state.characters),
+                    );
+                  }
+                } else {
+                  return Container();
+                }
+              },
+            ),
           ],
         ),
       ),

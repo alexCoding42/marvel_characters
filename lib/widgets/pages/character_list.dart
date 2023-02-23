@@ -1,21 +1,19 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:marvel_characters/models/character.dart';
 import 'package:marvel_characters/screens/character_details_screen.dart';
-import 'package:marvel_characters/view_models/character_view_model.dart';
 import 'package:marvel_characters/widgets/atoms/loading_indicator.dart';
 
 class CharacterList extends StatelessWidget {
-  final List<CharacterViewModel> characters;
+  final List<Character> characters;
 
   const CharacterList({Key? key, required this.characters}) : super(key: key);
 
-  void _navigateToDetailsScreen(
-      BuildContext context, CharacterViewModel character) {
+  void _navigateToDetailsScreen(BuildContext context, Character character) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) =>
-            CharacterDetailsScreen(character: character.character),
+        builder: (context) => CharacterDetailsScreen(character: character),
       ),
     );
   }
@@ -53,8 +51,7 @@ class CharacterList extends StatelessWidget {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(5.0),
                           child: CachedNetworkImage(
-                            imageUrl:
-                                character.character.thumbnail?.imageUrl ?? "",
+                            imageUrl: character.thumbnail?.imageUrl ?? "",
                             fit: BoxFit.cover,
                             placeholder: (context, url) =>
                                 const LoadingIndicator(),

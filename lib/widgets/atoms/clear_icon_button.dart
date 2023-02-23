@@ -1,23 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:marvel_characters/view_models/character_list_view_model.dart';
-import 'package:marvel_characters/view_models/comic_list_view_model.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:marvel_characters/bloc/character/characters_bloc.dart';
+import 'package:marvel_characters/bloc/comics/comics_bloc.dart';
 
 enum ClearIconButtonType { characters, comics }
 
-// TODO: refacto the widget to be flexible and able to work with both characterListViewModel and comicListViewModel
 class ClearIconButton extends StatefulWidget {
   final TextEditingController textController;
   final ClearIconButtonType type;
-  final CharacterListViewModel? characterListViewModel;
-  final ComicListViewModel? comicListViewModel;
 
-  const ClearIconButton(
-      {Key? key,
-      required this.textController,
-      required this.type,
-      this.characterListViewModel,
-      this.comicListViewModel})
-      : super(key: key);
+  const ClearIconButton({
+    Key? key,
+    required this.textController,
+    required this.type,
+  }) : super(key: key);
 
   @override
   State<ClearIconButton> createState() => _ClearIconButtonState();
@@ -26,8 +22,8 @@ class ClearIconButton extends StatefulWidget {
 class _ClearIconButtonState extends State<ClearIconButton> {
   @override
   Widget build(BuildContext context) {
-    // final CharacterListViewModel = Provider.of<CharacterListViewModel>(context);
-    // final ComicListViewModel = Provider.of<ComicListViewModel>(context);
+    final charactersBloc = context.read<CharactersBloc>();
+    final comicsBloc = context.read<ComicsBloc>();
 
     return Material(
       color: Colors.transparent,
@@ -40,9 +36,11 @@ class _ClearIconButtonState extends State<ClearIconButton> {
         ),
         onPressed: () {
           widget.textController.clear();
-          widget.type == ClearIconButtonType.characters
-              ? widget.characterListViewModel?.clearList()
-              : widget.comicListViewModel?.clearList();
+          if (widget.type == ClearIconButtonType.characters) {
+            charactersBloc.add(ClearCharactersEvent());
+          } else if (widget.type == ClearIconButtonType.comics) {
+            comicsBloc.add(ClearComicsEvent());
+          }
         },
       ),
     );

@@ -1,19 +1,19 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:marvel_characters/models/comic.dart';
 import 'package:marvel_characters/screens/comic_details_screen.dart';
-import 'package:marvel_characters/view_models/comic_view_model.dart';
 import 'package:marvel_characters/widgets/atoms/loading_indicator.dart';
 
 class ComicList extends StatelessWidget {
-  final List<ComicViewModel> comics;
+  final List<Comic> comics;
 
   const ComicList({Key? key, required this.comics}) : super(key: key);
 
-  void _navigateToDetailsScreen(BuildContext context, ComicViewModel comic) {
+  void _navigateToDetailsScreen(BuildContext context, Comic comic) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => ComicDetailsScreen(comic: comic.comic),
+        builder: (context) => ComicDetailsScreen(comic: comic),
       ),
     );
   }
@@ -51,7 +51,7 @@ class ComicList extends StatelessWidget {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(5.0),
                           child: CachedNetworkImage(
-                            imageUrl: comic.comic.thumbnail?.imageUrl ?? "",
+                            imageUrl: comic.thumbnail?.imageUrl ?? "",
                             fit: BoxFit.cover,
                             placeholder: (context, url) =>
                                 const LoadingIndicator(),
