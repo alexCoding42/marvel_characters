@@ -2,16 +2,12 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:marvel_characters/constants/api_endpoints.dart';
 import 'package:marvel_characters/models/character.dart';
 import 'package:marvel_characters/models/comic.dart';
 import 'package:marvel_characters/models/movie.dart';
 
 class Webservice {
-  static const String baseUrl = 'https://gateway.marvel.com:443/v1/public';
-  static const String charactersEndpoint = '/characters';
-  static const String comicsEndpoint = '/comics';
-  static const String mcuApiUrl = 'https://mcuapi.herokuapp.com/api/v1/movies';
-
   final String? apiKey = dotenv.env['MARVEL_API_KEY'];
   final String? privateKey = dotenv.env['MARVEL_PRIVATE_KEY'];
 
@@ -25,7 +21,7 @@ class Webservice {
     final ts = DateTime.now().millisecondsSinceEpoch.toString();
     final hash = _getHash(ts);
     final url =
-        '$baseUrl$charactersEndpoint?nameStartsWith=$name&apikey=$apiKey&ts=$ts&hash=$hash';
+        '$marvelApiBaseUrl$marvelApiCharactersEndpoint?nameStartsWith=$name&apikey=$apiKey&ts=$ts&hash=$hash';
     final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
@@ -41,7 +37,7 @@ class Webservice {
     final ts = DateTime.now().millisecondsSinceEpoch.toString();
     final hash = _getHash(ts);
     final url =
-        '$baseUrl$comicsEndpoint?titleStartsWith=$name&apikey=$apiKey&ts=$ts&hash=$hash';
+        '$marvelApiBaseUrl$marvelApiComicsEndpoint?titleStartsWith=$name&apikey=$apiKey&ts=$ts&hash=$hash';
     final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
@@ -54,7 +50,8 @@ class Webservice {
   }
 
   Future<List<Movie>> fetchMovies() async {
-    final response = await http.get(Uri.parse(mcuApiUrl));
+    const url = '$mcuApiBaseUrl$mcuApiMoviesEndpoint';
+    final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
       final body = jsonDecode(response.body);
