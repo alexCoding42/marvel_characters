@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:marvel_characters/models/character.dart';
-import 'package:marvel_characters/screens/character_details_screen.dart';
+import 'package:marvel_characters/screens/characters/character_details_screen.dart';
 import 'package:marvel_characters/widgets/atoms/loading_indicator.dart';
 
 class CharacterList extends StatelessWidget {

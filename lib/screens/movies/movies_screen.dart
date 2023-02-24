@@ -1,10 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:marvel_characters/bloc/movie/movies_bloc.dart';
+import 'package:marvel_characters/bloc/movies/movies_bloc.dart';
 import 'package:marvel_characters/constants/colors.dart';
 import 'package:marvel_characters/models/movie.dart';
-import 'package:marvel_characters/screens/movie_details_screen.dart';
+import 'package:marvel_characters/screens/movies/movie_details_screen.dart';
 import 'package:marvel_characters/widgets/atoms/loading_indicator.dart';
 
 class MoviesScreen extends StatefulWidget {

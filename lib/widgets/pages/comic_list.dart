@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:marvel_characters/models/comic.dart';
-import 'package:marvel_characters/screens/comic_details_screen.dart';
+import 'package:marvel_characters/screens/comics/comic_details_screen.dart';
 import 'package:marvel_characters/widgets/atoms/loading_indicator.dart';
 
 class ComicList extends StatelessWidget {

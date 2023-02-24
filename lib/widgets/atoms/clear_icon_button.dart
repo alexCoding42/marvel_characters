@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:marvel_characters/bloc/character/characters_bloc.dart';
+import 'package:marvel_characters/bloc/characters/characters_bloc.dart';
 import 'package:marvel_characters/bloc/comics/comics_bloc.dart';
 
 enum ClearIconButtonType { characters, comics }

@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:marvel_characters/constants/colors.dart';
-import 'package:marvel_characters/screens/characters_screen.dart';
-import 'package:marvel_characters/screens/comics_screen.dart';
-import 'package:marvel_characters/screens/movies_screen.dart';
+import 'package:marvel_characters/screens/characters/characters_screen.dart';
+import 'package:marvel_characters/screens/comics/comics_screen.dart';
+import 'package:marvel_characters/screens/movies/movies_screen.dart';
 import 'package:marvel_characters/services/webservice.dart';
 
-import 'bloc/character/characters_bloc.dart';
+import 'bloc/characters/characters_bloc.dart';
 import 'bloc/comics/comics_bloc.dart';
-import 'bloc/movie/movies_bloc.dart';
+import 'bloc/movies/movies_bloc.dart';
 
 void main() async {
   await dotenv.load();

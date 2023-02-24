@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:marvel_characters/bloc/character/characters_bloc.dart';
+import 'package:marvel_characters/bloc/characters/characters_bloc.dart';
 import 'package:marvel_characters/constants/colors.dart';
 import 'package:marvel_characters/widgets/atoms/loading_indicator.dart';
 import 'package:marvel_characters/widgets/molecules/searchbar.dart';
