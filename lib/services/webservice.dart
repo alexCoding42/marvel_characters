@@ -6,6 +6,7 @@ import 'package:marvel_characters/constants/api_endpoints.dart';
 import 'package:marvel_characters/models/character.dart';
 import 'package:marvel_characters/models/comic.dart';
 import 'package:marvel_characters/models/movie.dart';
+import 'package:marvel_characters/models/tvshow.dart';
 
 class Webservice {
   final String? apiKey = dotenv.env['MARVEL_API_KEY'];
@@ -59,6 +60,19 @@ class Webservice {
       return json.map((movie) => Movie.fromJson(movie)).toList();
     } else {
       throw Exception('Failed to load movies');
+    }
+  }
+
+  Future<List<TvShow>> fetchTvShows() async {
+    const url = '$mcuApiBaseUrl$mcuApiTvShowsEndpoint';
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      final body = jsonDecode(response.body);
+      final Iterable json = body["data"];
+      return json.map((show) => TvShow.fromJson(show)).toList();
+    } else {
+      throw Exception('Failed to load TV shows');
     }
   }
 }

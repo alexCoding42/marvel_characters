@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:marvel_characters/bloc/tvshows/tv_shows_bloc.dart';
 import 'package:marvel_characters/constants/colors.dart';
 import 'package:marvel_characters/screens/characters/characters_screen.dart';
 import 'package:marvel_characters/screens/comics/comics_screen.dart';
 import 'package:marvel_characters/screens/movies/movies_screen.dart';
+import 'package:marvel_characters/screens/tvshows/tv_shows_screen.dart';
 import 'package:marvel_characters/services/webservice.dart';
 
 import 'bloc/characters/characters_bloc.dart';
@@ -29,6 +31,7 @@ class _MainAppState extends State<MainApp> {
     CharactersScreen(),
     ComicsScreen(),
     MoviesScreen(),
+    TvShowsScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -49,6 +52,9 @@ class _MainAppState extends State<MainApp> {
         ),
         BlocProvider<MoviesBloc>(
           create: (context) => MoviesBloc(webservice: Webservice()),
+        ),
+        BlocProvider<TvShowsBloc>(
+          create: (context) => TvShowsBloc(webservice: Webservice()),
         ),
       ],
       child: MaterialApp(
@@ -71,6 +77,9 @@ class _MainAppState extends State<MainApp> {
                 ],
               ),
               child: BottomNavigationBar(
+                type: BottomNavigationBarType.fixed,
+                unselectedItemColor: Colors.grey,
+                showUnselectedLabels: true,
                 items: const <BottomNavigationBarItem>[
                   BottomNavigationBarItem(
                     label: "Characters",
@@ -83,6 +92,10 @@ class _MainAppState extends State<MainApp> {
                   BottomNavigationBarItem(
                     label: "Movies",
                     icon: Icon(Icons.videocam),
+                  ),
+                  BottomNavigationBarItem(
+                    label: "TV Shows",
+                    icon: Icon(Icons.tv),
                   ),
                 ],
                 currentIndex: _selectedIndex,
